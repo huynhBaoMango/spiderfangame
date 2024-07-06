@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
     public float speed;
+    public bool isPosLeft;
     [SerializeField] private LayerMask grappleLayer;
-    private Vector3 grapplePoint;
+    public Vector3 grapplePoint;
     public ropeCreator ropeCreator;
     private HingeJoint2D jointLeft;
     private HingeJoint2D jointRight;
@@ -41,10 +43,10 @@ public class playerController : MonoBehaviour
                 bool isPosLeft = Vector2.Distance(grapplePoint, jointLeft.gameObject.transform.position) - Vector2.Distance(grapplePoint, jointRight.gameObject.transform.position) < 0;
                 //right
                 if (!isPosLeft)
-                { 
+                {
                     ropeCreator.GenerateRope(grapplePoint, GameObject.Find("webshooterr").transform.position);
                 }
-                else 
+                else
                 //left
                 {
                     ropeCreator.GenerateRope(grapplePoint, GameObject.Find("webshooterl").transform.position);
@@ -80,8 +82,57 @@ public class playerController : MonoBehaviour
             jointLeft.enabled = false;
             jointRight.enabled = false;
             ropeCreator.DeleteSegments();
-            DestroyImmediate(GameObject.FindGameObjectWithTag("rope"));
+            
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit2D hit1 = Physics2D.Raycast
+            (
+                origin: Camera.main.ScreenToWorldPoint(Input.mousePosition),
+                direction: Vector2.zero,
+                distance: Mathf.Infinity,
+                layerMask: grappleLayer
+            );
+
+            if (hit1.collider != null)
+            {
+                grapplePoint = hit1.point;
+                grapplePoint.z = 0;
+                isPosLeft = Vector2.Distance(grapplePoint, jointLeft.gameObject.transform.position) - Vector2.Distance(grapplePoint, jointRight.gameObject.transform.position) < 0;
+                //right
+                if (!isPosLeft)
+                {
+                    ropeCreator.GenerateRope2(grapplePoint, GameObject.Find("webshooterr").transform.position);
+                }
+                else
+                //left
+                {
+                    ropeCreator.GenerateRope2(grapplePoint, GameObject.Find("webshooterl").transform.position);
+                }
+
+                GameObject curRope = GameObject.FindGameObjectWithTag("rope");
+                if (isPosLeft)
+                {
+                    jointLeft.enabled = true;
+                    jointLeft.connectedBody = curRope.GetComponentInChildren<Rigidbody2D>();
+                }
+                else
+                {
+                    jointRight.enabled = true;
+                    jointRight.connectedBody = curRope.GetComponentInChildren<Rigidbody2D>();
+                }
+
+            }
+            StartCoroutine(ResetBurstSwing());
+        }
+    }
+
+    IEnumerator ResetBurstSwing()
+    {
+        yield return new WaitForSeconds(0.5f);
+        jointLeft.enabled = false;
+        jointRight.enabled = false;
+        ropeCreator.DeleteSegments();
     }
 }

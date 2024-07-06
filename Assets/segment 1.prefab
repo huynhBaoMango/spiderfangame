@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 6725395290499750}
   - component: {fileID: 4700110615084839336}
   - component: {fileID: 1674531461518981496}
-  - component: {fileID: 242608403867502885}
-  - component: {fileID: 3891836607631588610}
+  - component: {fileID: 1535426577871100698}
   m_Layer: 0
-  m_Name: segment
+  m_Name: segment 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,8 +48,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 5
+  m_AngularDrag: 0.05
+  m_GravityScale: 0.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,8 +106,8 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!233 &242608403867502885
-HingeJoint2D:
+--- !u!257 &1535426577871100698
+TargetJoint2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -116,39 +115,14 @@ HingeJoint2D:
   m_GameObject: {fileID: 1265782972323935612}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_BreakAction: 3
-  m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
---- !u!254 &3891836607631588610
-RelativeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265782972323935612}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_BreakAction: 3
-  m_MaxForce: 10000
-  m_MaxTorque: 10000
-  m_CorrectionScale: 1
-  m_AutoConfigureOffset: 0
-  m_LinearOffset: {x: 0, y: 0}
-  m_AngularOffset: 0
+  m_Target: {x: 1.4040922, y: -0.5034181}
+  m_AutoConfigureTarget: 0
+  m_MaxForce: 700
+  m_DampingRatio: 0.6
+  m_Frequency: 100000

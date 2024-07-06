@@ -9,7 +9,9 @@ public class ropeCreator : MonoBehaviour
     [SerializeField, Range(2, 50)] int segmentsCount = 2;
 
     public HingeJoint2D hingePrefab;
+    public TargetJoint2D targetPrefab;
     public GameObject ropepref;
+    private RopeLine ropeline;
 
     [HideInInspector] public Transform[] segments;
 
@@ -18,7 +20,7 @@ public class ropeCreator : MonoBehaviour
         float fraction = 1f / (float)segmentsCount;
         return Vector2.Lerp(posA, posB, fraction * segmentIndex);
     }
-    [Button]
+
     public void GenerateRope(Vector2 posA, Vector2 posB)
     {
         segments = new Transform[segmentsCount];
@@ -27,7 +29,6 @@ public class ropeCreator : MonoBehaviour
         {
             var currJoint = Instantiate(hingePrefab, GetSegmentsPosition(posA, posB, i), Quaternion.identity, rope.transform);
             segments[i] = currJoint.transform;
-            
 
             if (i > 0)
             {
@@ -37,17 +38,20 @@ public class ropeCreator : MonoBehaviour
         }
     }
 
-    [Button]
+    public void GenerateRope2(Vector2 posA, Vector2 posB)
+    {
+        segments = new Transform[1];
+        GameObject rope = Instantiate(ropepref, Vector2.zero, Quaternion.identity);
+        var currJoint = Instantiate(targetPrefab, posA, Quaternion.identity, rope.transform);
+        segments[0] = currJoint.transform;
+        currJoint.target = currJoint.transform.position;
+        
+    }
+
     public void DeleteSegments()
     {
-        if (GameObject.FindGameObjectWithTag("rope").transform.childCount > 0)
-        {
-            for (int i = transform.childCount; i >= 0; i--)
-            {
-                DestroyImmediate(GameObject.FindGameObjectWithTag("rope").transform.GetChild(i).gameObject);
-            }
-
-            segments = null;
-        }
+        Destroy(GameObject.FindGameObjectWithTag("rope"));
+        segments = null;
     }
+
 }
